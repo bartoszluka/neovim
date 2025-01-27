@@ -59,6 +59,8 @@ return {
                 },
                 preview = {
                     treesitter = true,
+                    check_mime_type = true,
+                    timeout = 1000,
                 },
                 history = {
                     path = vim.fn.stdpath("data") .. "/telescope_history.sqlite3",
@@ -90,9 +92,11 @@ return {
                 ---@type FrecencyOpts
                 frecency = {
                     bootstrap = true,
-                    auto_validate = true,
+                    auto_validate = false,
                     matcher = "fuzzy",
                     path_display = { "filename_first" },
+                    filter_delimiter = "/",
+                    preceding = "opened",
                 },
             },
         })
