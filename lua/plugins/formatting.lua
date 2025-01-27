@@ -62,6 +62,11 @@ return {
             },
 
             formatters = {
+                ["google-java-format"] = {
+                    append_args = {
+                        "--aosp", -- Use AOSP style instead of Google Style (4-space indentation).
+                    },
+                },
                 prettier = {
                     append_args = { "--no-color" },
                 },
