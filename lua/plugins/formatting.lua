@@ -34,6 +34,7 @@ return {
                 json5 = { "prettier" },
                 jsonc = { "prettier" },
                 css = { "prettier" },
+                scss = { "prettier" },
                 fish = { "fish_indent" },
                 xml = { "xq" },
                 sh = { "shfmt" },
