@@ -25,7 +25,7 @@ return {
         require("lspconfig").cssls.setup({
             on_attach = on_attach,
             capabilities = capabilities,
-            cmd = { "css-languageserver", "--stdio" },
+            cmd = { "vscode-css-language-server", "--stdio" },
         })
         require("lspconfig").lua_ls.setup({
             on_attach = on_attach,
