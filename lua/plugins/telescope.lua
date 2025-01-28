@@ -104,10 +104,10 @@ return {
         -- telescope.load_extension("fzf_native")
         require("telescope").load_extension("frecency")
 
-        vim.keymap.set("n", "<leader>sf", function()
-            require("telescope").extensions.frecency.frecency({
-                workspace = "CWD",
-            })
-        end, { desc = "find files" })
+        -- vim.keymap.set("n", "<leader>sf", function()
+        --     require("telescope").extensions.frecency.frecency({
+        --         workspace = "CWD",
+        --     })
+        -- end, { desc = "find files" })
     end,
 }

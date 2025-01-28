@@ -17,7 +17,7 @@ return {
     "saadparwaiz1/cmp_luasnip",
     {
         "yioneko/nvim-cmp",
-        branch = "perf",      
+        branch = "perf",
         event = { "InsertEnter", "CmdlineEnter" },
         config = function()
             local cmp = require("cmp")
