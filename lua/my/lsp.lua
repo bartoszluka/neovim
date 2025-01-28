@@ -1,6 +1,7 @@
 return {
     on_attach = function(client, bufnr)
-        vim.cmd("autocmd! BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh({ bufnr = 0 })")
+        -- vim.cmd("autocmd! BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh({ bufnr = 0 })")
+        vim.cmd("autocmd! BufEnter,BufWritePost <buffer> lua vim.lsp.codelens.refresh({ bufnr = 0 })")
         nx.map({
             { "gd", vim.lsp.buf.definition, desc = "go to definition" },
             { "<leader>a", vim.lsp.buf.code_action, { "n", "v" }, desc = "code action" },
