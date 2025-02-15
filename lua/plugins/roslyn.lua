@@ -11,7 +11,8 @@ return {
 
     config = function()
         --local capabilities = require("blink.cmp").get_lsp().capabilities()
-        require("roslyn").setup({
+        local roslyn = require("roslyn")
+        roslyn.setup({
             -- how to on_attach for roslyn lsp
             -- https://github.com/seblj/roslyn.nvim/issues/8#issuecomment-2198336099
             lock_target = false,
@@ -58,6 +59,10 @@ return {
                 },
             },
             -- vim.lsp.inlay_hint.enable(true),
+        })
+        nx.map({
+            { "<leader>lf", vim.lsp.buf.format, desc = "format with lsp" },
+            { "<leader>lr", cmd("Roslyn restart"), desc = "restart roslyn lsp server" },
         })
     end,
 }

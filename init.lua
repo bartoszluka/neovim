@@ -1,6 +1,3 @@
--- https://github.com/neovim/neovim/issues/31675
-vim.hl = vim.highlight
-
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
 vim.g.editorconfig = true

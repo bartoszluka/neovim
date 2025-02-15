@@ -6,12 +6,15 @@ return {
         "<leader>sh",
     },
     cmd = { "Telescope" },
+    -- dependencies = {
+    --     {
+    --         "nvim-telescope/telescope-fzf-native.nvim",
+    --         build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
+    --     },
+    --     "nvim-telescope/telescope-frecency.nvim",
+    -- },
     dependencies = {
-        {
-            "nvim-telescope/telescope-fzf-native.nvim",
-            build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
-        },
-        "nvim-telescope/telescope-frecency.nvim",
+        "nvim-telescope/telescope-ui-select.nvim",
     },
 
     config = function()
@@ -33,7 +36,7 @@ return {
             },
         }
 
-        -- vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "find files" })
+        vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "find files" })
         vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "live grep" })
         vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "help tags" })
         vim.keymap.set("n", "<leader>sq", builtin.command_history, { desc = "command history" })
@@ -100,9 +103,9 @@ return {
                 },
             },
         })
-
+        require("telescope").load_extension("ui-select")
         -- telescope.load_extension("fzf_native")
-        require("telescope").load_extension("frecency")
+        -- require("telescope").load_extension("frecency")
 
         -- vim.keymap.set("n", "<leader>sf", function()
         --     require("telescope").extensions.frecency.frecency({
