@@ -57,8 +57,8 @@ nx.set({
     -- folds
     foldmethod = "expr",
     foldexpr = "v:lua.vim.treesitter.foldexpr()",
-    foldtext = "v:lua.vim.treesitter.foldtext()",
-    foldenable = false, --disable folds on start
+    -- foldtext = "v:lua.vim.treesitter.foldtext()",
+    foldenable = false, -- disable folds on start
     -- ...
     wrap = false, -- wrapping of text
     breakindent = true,
@@ -76,27 +76,27 @@ nx.set({
     guicursor = "n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20",
     guifont = "CaskaydiaCove Nerd Font Mono:h14",
     inccommand = "split", -- show the effects of a search / replace in a live preview window
-    formatexpr = "v:lua.require'conform'.formatexpr()",
+    -- formatexpr = "v:lua.require'conform'.formatexpr()",
 }, vim.opt)
 
-function MyFoldtext()
-    local foldtext = vim.treesitter.foldtext()
-
-    ---@diagnostic disable-next-line: undefined-field
-    local lines_folded = vim.v.foldend - vim.v.foldstart
-    local text_lines = " lines"
-
-    if lines_folded == 1 then
-        text_lines = " line"
-    end
-
-    ---@diagnostic disable-next-line: param-type-mismatch
-    table.insert(foldtext, { " - " .. lines_folded .. text_lines, { "Folded" } })
-
-    return foldtext
-end
-
-vim.opt.foldtext = "v:lua.MyFoldtext()"
+-- function MyFoldtext()
+--     local foldtext = vim.fn.foldtext()
+--
+--     ---@diagnostic disable-next-line: undefined-field
+--     local lines_folded = vim.v.foldend - vim.v.foldstart
+--     local text_lines = " lines"
+--
+--     if lines_folded == 1 then
+--         text_lines = " line"
+--     end
+--
+--     ---@diagnostic disable-next-line: param-type-mismatch
+--     table.insert(foldtext, { " - " .. lines_folded .. text_lines, { "Folded" } })
+--
+--     return foldtext
+-- end
+--
+-- vim.opt.foldtext = "v:lua.MyFoldtext()"
 
 nx.set({
     signcolumn = "yes",
