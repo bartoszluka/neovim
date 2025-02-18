@@ -3,6 +3,9 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     cmd = "GuessIndent",
     config = function()
-        require("guess-indent").setup({})
+        require("guess-indent").setup({
+            auto_cmd = true,
+            override_editorconfig = true,
+        })
     end,
 }
