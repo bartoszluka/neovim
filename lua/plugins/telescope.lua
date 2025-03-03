@@ -1,9 +1,72 @@
 return {
     "nvim-telescope/telescope.nvim",
     keys = {
-        "<leader>sf",
-        "<leader>sg",
-        "<leader>sh",
+        {
+            "<leader>sf",
+            function()
+                require("telescope.builtin").find_files({
+                    hidden = true,
+                    -- no_ignore = true,
+                })
+            end,
+            { desc = "find files" },
+        },
+        {
+            "<leader>sg",
+            function()
+                require("telescope.builtin").live_grep()
+            end,
+            { desc = "live grep" },
+        },
+        {
+            "<leader>sh",
+            function()
+                require("telescope.builtin").help_tags()
+            end,
+            { desc = "help tags" },
+        },
+        {
+            "<leader>sq",
+            function()
+                require("telescope.builtin").command_history()
+            end,
+            { desc = "command history" },
+        },
+        {
+            "<leader>ss",
+            function()
+                require("telescope.builtin").lsp_document_symbols()
+            end,
+            { desc = "lsp document symbols" },
+        },
+        {
+            "<leader>sS",
+            function()
+                require("telescope.builtin").lsp_dynamic_workspace_symbols()
+            end,
+            { desc = "lsp workspace symbols" },
+        },
+        {
+            "<leader>so",
+            function()
+                require("telescope.builtin").oldfiles()
+            end,
+            { desc = "old files" },
+        },
+        {
+            "<leader>sr",
+            function()
+                require("telescope.builtin").resume()
+            end,
+            { desc = "resume last search" },
+        },
+        {
+            "<leader>sb",
+            function()
+                require("telescope.builtin").buffers()
+            end,
+            { desc = "resume last search" },
+        },
     },
     cmd = { "Telescope" },
     -- dependencies = {
@@ -21,8 +84,6 @@ return {
         local telescope = require("telescope")
         local actions = require("telescope.actions")
 
-        local builtin = require("telescope.builtin")
-
         local layout_config = {
             vertical = {
                 width = function(_, max_columns)
@@ -36,13 +97,6 @@ return {
             },
         }
 
-        vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "find files" })
-        vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "live grep" })
-        vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "help tags" })
-        vim.keymap.set("n", "<leader>sq", builtin.command_history, { desc = "command history" })
-        vim.keymap.set("n", "<leader>ss", builtin.lsp_document_symbols, { desc = "lsp document symbols" })
-        vim.keymap.set("n", "<leader>sS", builtin.lsp_dynamic_workspace_symbols, { desc = "lsp workspace symbols" })
-
         telescope.setup({
             defaults = {
                 path_display = { "filename_first" },
@@ -50,13 +104,13 @@ return {
                 layout_config = layout_config,
                 mappings = {
                     i = {
-                        ["<C-q>"] = actions.send_to_qflist,
-                        ["<C-l>"] = actions.send_to_loclist,
+                        ["<C-q>"] = actions.smart_send_to_qflist,
                         -- ['<esc>'] = actions.close,
                         ["<C-s>"] = actions.cycle_previewers_next,
                         ["<C-a>"] = actions.cycle_previewers_prev,
                     },
                     n = {
+                        ["<C-q>"] = actions.smart_send_to_qflist,
                         q = actions.close,
                     },
                 },
@@ -84,22 +138,6 @@ return {
                     "--line-number",
                     "--column",
                     "--smart-case",
-                },
-            },
-            extensions = {
-                fzy_native = {
-                    override_generic_sorter = false,
-                    override_file_sorter = true,
-                },
-
-                ---@type FrecencyOpts
-                frecency = {
-                    bootstrap = true,
-                    auto_validate = false,
-                    matcher = "fuzzy",
-                    path_display = { "filename_first" },
-                    filter_delimiter = "/",
-                    preceding = "opened",
                 },
             },
         })

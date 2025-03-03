@@ -1,6 +1,23 @@
-local project_library_path = "node_modules"
-local cmd =
-    { "node_modules/.bin/ngserver", "--stdio", "--tsProbeLocations", project_library_path, "--ngProbeLocations", project_library_path }
+if not vim.fn.executable("ngserver") then
+    return
+end
+
+local angularls_path = vim.fs.dirname(vim.fn.exepath("ngserver"))
+
+local cmd = {
+    "ngserver",
+    "--stdio",
+    "--tsProbeLocations",
+    table.concat({
+        angularls_path,
+        vim.uv.cwd(),
+    }, ","),
+    "--ngProbeLocations",
+    table.concat({
+        angularls_path .. "/node_modules/@angular/language-server",
+        vim.uv.cwd(),
+    }, ","),
+}
 
 require("lspconfig").angularls.setup({
     cmd = cmd,
