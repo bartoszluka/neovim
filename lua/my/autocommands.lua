@@ -208,3 +208,21 @@ nx.au({
     end,
 }, { create_group = "GFWithBackslashes" })
 
+nx.au({
+    {
+        "InsertEnter",
+        callback = function()
+            if vim.opt.relativenumber and vim.opt.number then
+                vim.opt.relativenumber = false
+            end
+        end,
+    },
+    {
+        "InsertLeave",
+        callback = function()
+            if not vim.opt.relativenumber and vim.opt.number then
+                vim.opt.relativenumber = true
+            end
+        end,
+    },
+}, { create_group = "DisableRelativeNumbersInInsertMode" })
