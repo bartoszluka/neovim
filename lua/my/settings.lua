@@ -32,6 +32,7 @@ vim.opt.shortmess:append("c") -- don't give completion-menu messages
 nx.set({
     -- General
     clipboard = "unnamedplus", -- use system clipboard
+    conceallevel = 0, -- do not hide characters like `` or * in help menu and others
     mouse = "a", -- allow mouse in all modes
     lazyredraw = true, -- pause redrawin when executing macros and other commands
     showmode = false, -- print vim mode on enter
