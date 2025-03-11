@@ -1,22 +1,3 @@
--- Diagnostic keymaps
-vim.diagnostic.config({ severity_sort = true })
-nx.map({
-    {
-        "[e",
-        function()
-            vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
-        end,
-        desc = "prev error",
-    },
-    {
-        "]e",
-        function()
-            vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
-        end,
-        desc = "next error",
-    },
-})
-
 nx.map({
     { "L", "$", { "n", "v", "o" }, silent = true },
     { "H", "0", { "n", "v", "o" }, silent = true },
@@ -71,3 +52,10 @@ nx.map({
 --     { ";", ":", { "n", "v" }, silent = false }, -- map ';' to start command mode
 --     { "<C-l>", "<Right>", { "c" }, silent = false },
 -- })
+
+nx.map({
+    "<leader>bo",
+    function()
+        require("my.bufonly").bufonly(false)
+    end,
+})
