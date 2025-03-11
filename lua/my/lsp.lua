@@ -1,3 +1,19 @@
+--- @param opts vim.lsp.LocationOpts.OnList
+local function my_references(opts)
+    local refs = opts.items
+
+    local replace_items = "r"
+    if #refs == 0 then
+        vim.notify("no references", vim.log.levels.INFO)
+    elseif #refs == 1 then
+        vim.fn.setqflist(refs, replace_items)
+        vim.cmd.cfirst()
+    else
+        vim.fn.setqflist(refs, replace_items)
+        vim.cmd.copen()
+    end
+end
+
 return {
     on_attach = function(client, bufnr)
         -- vim.cmd("autocmd! BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh({ bufnr = 0 })")
@@ -6,7 +22,13 @@ return {
             { "gd", vim.lsp.buf.definition, desc = "go to definition" },
             { "<leader>a", vim.lsp.buf.code_action, { "n", "v" }, desc = "code action" },
             { "gi", vim.lsp.buf.implementation, desc = "go to implementation" },
-            { "grr", vim.lsp.buf.references, desc = "go to references" },
+            {
+                "grr",
+                function()
+                    vim.lsp.buf.references({ includeDeclaration = false }, { on_list = my_references })
+                end,
+                desc = "go to references",
+            },
             { "gra", vim.lsp.buf.code_action, desc = "code action" },
             { "grn", vim.lsp.buf.rename, desc = "code action" },
             { "gh", vim.diagnostic.open_float, desc = "open diagnostic" },
