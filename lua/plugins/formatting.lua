@@ -36,10 +36,11 @@ return {
                 css = { "prettier" },
                 scss = { "prettier" },
                 fish = { "fish_indent" },
-                xml = { "xq" },
+                xml = { "csharpier-1.0" },
+                -- xml = { "xq" },
                 sh = { "shfmt" },
                 c = { "clang_format" },
-                cs = { "injected", "csharpier", stop_after_first = false },
+                cs = { "injected", "csharpier-1.0", stop_after_first = false },
                 fsharp = { "fantomas" },
                 -- ps1 = { "psformat" },
                 markdown = {
@@ -55,6 +56,7 @@ return {
                 sql = { "sql_formatter" },
                 just = { "just" },
                 html = { "prettierd", "prettier", stop_after_first = true },
+                htmlangular = { "prettierd", "prettier", stop_after_first = true },
                 java = { "google-java-format" },
                 -- Use the "*" filetype to run formatters on all filetypes.
                 ["*"] = { "trim_whitespace" },
@@ -63,6 +65,11 @@ return {
             },
 
             formatters = {
+                ["csharpier-1.0"] = {
+                    command = "csharpier",
+                    args = { "format", "--compilation-errors-as-warnings", "$FILENAME" },
+                    stdin = false,
+                },
                 ["google-java-format"] = {
                     append_args = {
                         "--aosp", -- Use AOSP style instead of Google Style (4-space indentation).

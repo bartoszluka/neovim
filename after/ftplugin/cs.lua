@@ -51,7 +51,18 @@ local function process_output(out)
                     text = actual_msg,
                 }
             else
-                return nil
+                path, msg = line:match("^(.+) %: error (.+)$")
+                if not path or not msg then
+                    return nil
+                end
+                ---@diagnostic disable-next-line: unused-local
+                local error_code, actual_msg, project = msg:match("^(.+%:%s)(.+)%s")
+                return {
+                    filename = path,
+                    lnum = 0,
+                    col = 0,
+                    text = actual_msg,
+                }
             end
         end)
         :filter(function(thing)

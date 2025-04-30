@@ -61,10 +61,10 @@ return {
             -- case_insensitive_regex: sets regex case sensitivity
             case_insensitive_regex = false,
         })
-        nx.hl({
-            { "IlluminatedWordText", "IlluminatedWordRead", "IlluminatedWordWrite" },
-            -- bg = "#403a36",
-            link = "PmenuSel",
-        })
+        -- nx.hl({
+        --     { "IlluminatedWordText", "IlluminatedWordRead", "IlluminatedWordWrite" },
+        --     -- bg = "#403a36",
+        --     link = "PmenuSel",
+        -- })
     end,
 }

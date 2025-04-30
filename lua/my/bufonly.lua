@@ -1,9 +1,12 @@
+---@return boolean
 local function should_delete(bufnr)
-    local buftype = vim.api.nvim_get_option_value("buftype", { buf = bufnr })
-
-    local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
-
-    return buftype ~= "nofile" and filetype ~= ""
+    if 1 ~= vim.fn.buflisted(bufnr) then
+        return false
+    end
+    if not vim.api.nvim_buf_is_loaded(bufnr) then
+        return false
+    end
+    return true
 end
 
 local function bufonly(force)

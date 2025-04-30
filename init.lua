@@ -13,10 +13,9 @@ _G.cmd = function(command)
     return "<cmd>" .. command .. "<CR>"
 end
 
+require("my.powershell")
 require("config.lazy")
 require("my.autocommands")
 require("my.settings")
 require("my.keymaps")
 require("my.commands")
-
-vim.cmd.colorscheme("melange")

@@ -30,8 +30,8 @@ return {
             gitsigns = {
                 enabled = true,
                 keymaps = {
-                    next = "]c",
-                    prev = "[c",
+                    next = "]h",
+                    prev = "[h",
                 },
             },
             -- Integration with https://github.com/nvim-neotest/neotest

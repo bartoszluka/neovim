@@ -1,9 +1,8 @@
 return {
-    enabled = false,
+    enabled = true,
     "gbprod/nord.nvim",
     -- this colorscheme does not behave well with the `colorscheme` setting
     -- colorscheme = "nord",
-    event = "UIEnter",
     priority = 1000,
     config = function()
         require("nord").setup({
@@ -28,15 +27,17 @@ return {
             },
             --- You can override specific highlights to use other groups or a hex color
             --- function will be called with all highlights and the colorScheme table
-            on_highlights = function(highlights, colors)
-                highlights.DiffAdd.fg = "#002800"
-                highlights.DiffAdd.bg = colors.snow_storm.brightest
 
-                highlights.DiffDelete.fg = "#3f0001"
-                highlights.DiffDelete.bg = colors.snow_storm.brightest
+            ---@param colors Nord.Palette
+            on_highlights = function(highlights, colors)
+                highlights["@attribute.sql"] = { fg = colors.frost.artic_water }
+                -- highlights.DiffAdd.fg = "#002800"
+                -- highlights.DiffAdd.bg = colors.snow_storm.brightest
+                --
+                -- highlights.DiffDelete.fg = "#3f0001"
+                -- highlights.DiffDelete.bg = colors.snow_storm.brightest
                 -- highlights.MultiCursor = "#434c5e"
                 -- highlights.MultiCursorMain.fg = colors.nord3
-
                 -- colors = {
                 --   aurora = {
                 --     green = "#A3BE8C",

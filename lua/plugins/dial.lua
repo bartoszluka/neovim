@@ -62,6 +62,7 @@ return {
     },
     config = function()
         local augend = require("dial.augend")
+
         require("dial.config").augends:register_group({
             default = {
                 augend.integer.alias.decimal,
@@ -75,6 +76,24 @@ return {
                 augend.date.alias["%Y/%m/%d"],
                 augend.constant.alias.alpha,
                 augend.constant.alias.Alpha,
+            },
+        })
+
+        require("dial.config").augends:on_filetype({
+            sql = {
+                augend.constant.new({
+                    elements = { "ASC", "DESC" },
+                    word = true, -- if false, "sand" is incremented into "sor", "doctor" into "doctand", etc.
+                    cyclic = true, -- "or" is incremented into "and".
+                }),
+                augend.constant.new({
+                    elements = { "asc", "desc" },
+                    word = true, -- if false, "sand" is incremented into "sor", "doctor" into "doctand", etc.
+                    cyclic = true, -- "or" is incremented into "and".
+                }),
+                augend.integer.alias.decimal,
+                augend.constant.alias.bool,
+                augend.date.alias["%Y-%m-%d"],
             },
         })
     end,

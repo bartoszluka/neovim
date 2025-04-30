@@ -7,7 +7,7 @@ vim.filetype.add({
         ll = "llvm",
     },
     pattern = {
-        ["*.[cf]sproj"] = "xml",
+        -- ["*.[cf]sproj"] = "xml",
         ["Directory.*.props"] = "xml",
     },
 })
@@ -181,7 +181,7 @@ nx.au({
     "TextYankPost",
     pattern = "*",
     callback = function()
-        vim.highlight.on_yank({ timeout = 50 })
+        vim.hl.on_yank({ timeout = 50 })
     end,
 }, { create_group = "HighlightYank" })
 
@@ -212,7 +212,7 @@ nx.au({
     {
         "InsertEnter",
         callback = function()
-            if vim.opt.relativenumber and vim.opt.number then
+            if vim.opt.relativenumber:get() and vim.opt.number:get() then
                 vim.opt.relativenumber = false
             end
         end,
@@ -220,7 +220,7 @@ nx.au({
     {
         "InsertLeave",
         callback = function()
-            if not vim.opt.relativenumber and vim.opt.number then
+            if not vim.opt.relativenumber:get() and vim.opt.number:get() then
                 vim.opt.relativenumber = true
             end
         end,

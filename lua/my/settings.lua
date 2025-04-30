@@ -23,11 +23,6 @@ vim.opt.fillchars = {
     vert = "▏",
 }
 
-vim.opt.shell = "pwsh"
-vim.opt.shellcmdflag = "-command"
-vim.opt.shellquote = '"'
-vim.opt.shellxquote = ""
-
 vim.opt.shortmess:append("c") -- don't give completion-menu messages
 nx.set({
     -- General
@@ -158,9 +153,9 @@ vim.diagnostic.config({
     underline = true,
     severity_sort = true,
     float = {
-        focusable = false,
+        focusable = true,
         style = "minimal",
-        border = "rounded",
+        border = "single",
         source = "if_many",
         header = "",
         prefix = "",

@@ -14,6 +14,11 @@ local function get_session_name()
     end
 end
 
+local function write_session()
+    local session_name = get_session_name()
+    MiniSessions.write(session_name, { verbose = true })
+end
+
 return {
     "echasnovski/mini.sessions",
     version = false,
@@ -63,10 +68,7 @@ return {
             },
             {
                 "VimLeave",
-                callback = function()
-                    local session_name = get_session_name()
-                    MiniSessions.write(session_name)
-                end,
+                callback = write_session,
                 desc = "auto write session on exit",
             },
         }, {
@@ -74,5 +76,7 @@ return {
             nested = true,
             create_group = "MySessions",
         })
+
+        nx.cmd({ "SessionWrite", write_session, desc = "manually write session" })
     end,
 }

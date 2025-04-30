@@ -1,4 +1,18 @@
-local filetypes = { "nix", "css", "html", "haskell", "lua", "elm" }
+local filetypes = {
+    "nix",
+    "css",
+    "scss",
+    "toml",
+    "yaml",
+    "html",
+    "haskell",
+    "lua",
+    "elm",
+    "typescript",
+    "javascript",
+    "typescriptreact",
+    "javascriptreact",
+}
 return {
     "NvChad/nvim-colorizer.lua",
     -- event = "DeferredUIEnter",

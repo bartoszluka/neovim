@@ -35,16 +35,9 @@ return {
         {
             "<leader>ss",
             function()
-                require("telescope.builtin").lsp_document_symbols()
-            end,
-            { desc = "lsp document symbols" },
-        },
-        {
-            "<leader>sS",
-            function()
                 require("telescope.builtin").lsp_dynamic_workspace_symbols()
             end,
-            { desc = "lsp workspace symbols" },
+            { desc = "lsp document symbols" },
         },
         {
             "<leader>so",
@@ -64,6 +57,13 @@ return {
             "<leader>sb",
             function()
                 require("telescope.builtin").buffers()
+            end,
+            { desc = "resume last search" },
+        },
+        {
+            "<leader>sk",
+            function()
+                require("telescope.builtin").keymaps()
             end,
             { desc = "resume last search" },
         },

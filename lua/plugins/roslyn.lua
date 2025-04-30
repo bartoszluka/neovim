@@ -3,8 +3,6 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     ft = "cs",
 
-    dependencies = { "Issafalcon/lsp-overloads.nvim" },
-
     opts = {
         broad_search = true,
     },
@@ -20,8 +18,6 @@ return {
             config = {
                 on_attach = function(client, bufnr)
                     require("my.lsp").on_attach(client, bufnr)
-                    ---@diagnostic disable-next-line: missing-fields
-                    require("lsp-overloads").setup(client, {})
                 end,
                 settings = {
                     capabilities = require("my.lsp").make_capabilities(),
