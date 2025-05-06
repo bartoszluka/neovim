@@ -58,6 +58,12 @@ return {
                 html = { "prettierd", "prettier", stop_after_first = true },
                 htmlangular = { "prettierd", "prettier", stop_after_first = true },
                 java = { "google-java-format" },
+                typst = {
+                    "injected",
+                    "typstyle",
+                    stop_after_first = false,
+                    -- "prettypst",
+                },
                 -- Use the "*" filetype to run formatters on all filetypes.
                 ["*"] = { "trim_whitespace" },
                 -- Use the "_" filetype to run formatters on filetypes that don't have other formatters configured.
