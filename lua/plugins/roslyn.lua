@@ -16,6 +16,13 @@ return {
             lock_target = false,
             ---@diagnostic disable-next-line: missing-fields
             config = {
+                cmd = {
+                    "dotnet",
+                    vim.fn.stdpath("data") .. "/roslyn/Microsoft.CodeAnalysis.LanguageServer.dll",
+                    "--logLevel=Information",
+                    "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+                    "--stdio",
+                },
                 on_attach = function(client, bufnr)
                     require("my.lsp").on_attach(client, bufnr)
                 end,
