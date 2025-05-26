@@ -19,16 +19,9 @@ return {
                 -- Conform will run multiple formatters sequentially
                 python = { "isort", "ruff_format" },
                 -- Use a sub-list to run only the first available formatter
-                javascript = {
-                    -- "biome",
-                    "prettier",
-                    stop_after_first = true,
-                },
-                typescript = {
-                    -- "biome",
-                    "prettier",
-                    stop_after_first = true,
-                },
+                javascript = { "prettier" },
+                typescript = { "prettier" },
+                typescriptreact = { "prettier" },
                 yaml = { "prettier" },
                 json = { "prettier" },
                 json5 = { "prettier" },
