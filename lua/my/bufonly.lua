@@ -3,9 +3,6 @@ local function should_delete(bufnr)
     if 1 ~= vim.fn.buflisted(bufnr) then
         return false
     end
-    if not vim.api.nvim_buf_is_loaded(bufnr) then
-        return false
-    end
     return true
 end
 

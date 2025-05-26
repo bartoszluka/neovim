@@ -40,13 +40,13 @@ nx.map({
     { "<leader>W", "<cmd>write<CR>", desc = "write file" },
 })
 
-local modes = { "n", "v", "t" }
-nx.map({
-    { "<C-j>", "<C-w>j", modes, desc = "focus window to the bottom" },
-    { "<C-k>", "<C-w>k", modes, desc = "focus window to the top" },
-    { "<C-l>", "<C-w>l", modes, desc = "focus window to the right" },
-    { "<C-h>", "<C-w>h", modes, desc = "focus window to the left" },
-})
+-- local modes = { "n", "v", "t" }
+-- nx.map({
+--     { "<C-j>", "<C-w>j", modes, desc = "focus window to the bottom" },
+--     { "<C-k>", "<C-w>k", modes, desc = "focus window to the top" },
+--     { "<C-l>", "<C-w>l", modes, desc = "focus window to the right" },
+--     { "<C-h>", "<C-w>h", modes, desc = "focus window to the left" },
+-- })
 
 -- nx.map({
 --     { ";", ":", { "n", "v" }, silent = false }, -- map ';' to start command mode
@@ -59,3 +59,20 @@ nx.map({
         require("my.bufonly").bufonly(false)
     end,
 })
+
+nx.map({
+    {
+        "]e",
+        function()
+            vim.diagnostic.jump({ count = 1, float = true, severity = { min = vim.diagnostic.severity.ERROR } })
+        end,
+        desc = "next error",
+    },
+    {
+        "[e",
+        function()
+            vim.diagnostic.jump({ count = -1, float = true, severity = { min = vim.diagnostic.severity.ERROR } })
+        end,
+        desc = "next error",
+    },
+}, { silent = true })
