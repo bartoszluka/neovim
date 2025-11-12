@@ -23,6 +23,7 @@ return {
     "echasnovski/mini.sessions",
     version = false,
     lazy = false,
+    enabled = true,
     config = function()
         require("mini.sessions").setup({
             -- Whether to read default session if Neovim opened without file arguments
@@ -32,7 +33,7 @@ return {
             autowrite = false,
 
             -- Directory where global sessions are stored (use `''` to disable)
-            -- directory = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "session"), --<"session" subdir of user data directory from |stdpath()|>,
+            -- directory = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "session"), -- "session" subdir of user data directory from |stdpath()|,
 
             -- File for local session (use `''` to disable)
             file = "",
@@ -43,13 +44,27 @@ return {
             -- Hook functions for actions. Default `nil` means 'do nothing'.
             hooks = {
                 -- Before successful action
-                pre = { read = nil, write = nil, delete = nil },
+                pre = {
+                    read = nil,
+                    write = function()
+                        require("my.shada").delete_shada()
+                    end,
+                    delete = nil,
+                },
                 -- After successful action
-                post = { read = nil, write = nil, delete = nil },
+                post = {
+                    read = function()
+                        vim.schedule(function()
+                            vim.cmd("silent! windo edit|normal! zz")
+                        end)
+                    end,
+                    write = nil,
+                    delete = nil,
+                },
             },
 
             -- Whether to print session path after action
-            verbose = { read = true, write = false, delete = true },
+            verbose = { read = false, write = true, delete = true },
         })
         nx.au({
             {

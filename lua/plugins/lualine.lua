@@ -1,6 +1,6 @@
 return {
     "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
+    event = { "BufWinEnter", "BufReadPost" },
     config = function()
         local function lsp()
             local buf_id = vim.api.nvim_get_current_buf()
@@ -38,8 +38,11 @@ return {
                         -- 2: Absolute path
                         -- 3: Absolute path, with tilde as the home directory
                         -- 4: Filename and parent dir, with tilde as the home directory
-
-                        -- color = "Identifier"
+                        shorting_target = 60,
+                        -- color = "Identifier",
+                        fmt = function(str, context)
+                            return vim.fn.simplify(vim.fs.normalize(str))
+                        end,
                     },
                 },
                 lualine_x = {

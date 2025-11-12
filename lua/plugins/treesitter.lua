@@ -38,6 +38,7 @@ return {
                 "csv",
                 "xml",
                 "just",
+                "rust",
                 "make",
                 "scss",
                 "regex",
@@ -67,8 +68,6 @@ return {
                     keymaps = {
                         -- ["af"] = "@function.outer",
                         -- ["if"] = "@function.inner",
-                        -- ["ac"] = "@class.outer",
-                        -- ["ic"] = "@class.inner",
                         ["aC"] = "@call.outer",
                         ["iC"] = "@call.inner",
                         ["agc"] = "@comment.outer",
@@ -79,6 +78,8 @@ return {
                         -- ["il"] = "@loop.inner",
                         -- ["aP"] = "@parameter.outer",
                         -- ["iP"] = "@parameter.inner",
+                        ["aa"] = "@parameter.outer",
+                        ["ia"] = "@parameter.inner",
                     },
                     selection_modes = {
                         ["@parameter.outer"] = "v",

@@ -76,3 +76,5 @@ nx.map({
         desc = "next error",
     },
 }, { silent = true })
+
+nx.map({ "gh", vim.diagnostic.open_float, desc = "open diagnostic" })

@@ -17,14 +17,14 @@ nx.au({
     desc = "fix commentstring for c-like languages",
     pattern = { "c", "cpp", "cs", "java", "fsharp" },
     command = "setlocal commentstring=//%s",
-}, { create_group = "FixCommentString" })
+}, { nested = true, create_group = "FixCommentString" })
 
 nx.au({
     "FileType",
     desc = "fix commentstring for markdown",
     pattern = "markdown",
     command = [[setlocal commentstring=<!--\ %s\ -->]],
-}, { create_group = "FixMarkdownCommentString" })
+}, { nested = true, create_group = "FixMarkdownCommentString" })
 
 nx.au({
     "BufWinEnter",
@@ -34,6 +34,7 @@ nx.au({
         vim.opt.formatoptions:remove("o")
         vim.opt_local.formatoptions:remove("o")
     end,
+    nested = true,
 }, { create_group = "DisableExtendingComments" })
 
 nx.au({
@@ -46,6 +47,7 @@ nx.au({
             vim.cmd.startinsert()
         end
     end,
+    nested = true,
 }, { create_group = "GitCommitStartInsert" })
 
 nx.au({
@@ -58,7 +60,7 @@ nx.au({
             commentstring = "// %s",
         }, vim.bo)
     end,
-}, { create_group = "Rasi" })
+}, { nested = true, create_group = "Rasi" })
 
 nx.au({
     "BufRead",
@@ -70,6 +72,7 @@ nx.au({
             commentstring = "// %s",
         }, vim.bo)
     end,
+    nested = true,
 }, { create_group = "AppsettingsJson" })
 
 nx.au({
@@ -78,6 +81,7 @@ nx.au({
     callback = function(event)
         nx.map({ "gd", "K", buffer = event.buf, silent = true })
     end,
+    nested = true,
 }, { create_group = "GoToDefinitionInHelpFiles" })
 
 -- nx.au({
@@ -111,10 +115,13 @@ nx.au({
     { "FocusGained", command = "checktime" },
     { "TermClose", command = "checktime" },
     { "TermLeave", command = "checktime" },
-}, { create_group = "CheckIfEditedOutside" })
+}, { create_group = "CheckIfEditedOutside", nested = true })
 
 -- resize splits if window got resized
-nx.au({ "VimResized", command = "tabdo wincmd =" }, { create_group = "ResizeSplits" })
+nx.au({
+    "VimResized",
+    command = "tabdo wincmd =",
+}, { nested = true, create_group = "ResizeSplits" })
 
 -- close some filetypes with <q>
 nx.au({
@@ -140,7 +147,7 @@ nx.au({
         vim.bo[event.buf].buflisted = false
         nx.map({ "q", "<cmd>close!<cr>", buffer = event.buf, silent = true })
     end,
-}, { create_group = "CloseWithQ" })
+}, { create_group = "CloseWithQ", nested = true })
 
 -- close some filetypes with <q>
 nx.au({
@@ -149,7 +156,7 @@ nx.au({
     callback = function(event)
         nx.map({ "q", "<cmd>quit<cr>", buffer = event.buf, silent = true })
     end,
-}, { create_group = "QuitWithQ" })
+}, { create_group = "QuitWithQ", nested = true })
 
 -- wrap and check for spell in text filetypes
 nx.au({
@@ -161,7 +168,47 @@ nx.au({
             vim.opt_local.spell = true
         end,
     },
-}, { create_group = "GitCommitGroup" })
+}, { nested = true, create_group = "GitCommitGroup" })
+
+nx.au({
+    {
+        "FileType",
+        pattern = "help",
+        callback = function()
+            vim.opt_local.conceallevel = 0
+        end,
+    },
+}, { nested = true, create_group = "GitCommitGroup" })
+
+nx.au({
+    "FileType",
+    pattern = "qf",
+    callback = function()
+        nx.map({
+            "dd",
+            function()
+                local currentLine = vim.fn.line(".")
+                local qflist = vim.fn.getqflist()
+                table.remove(qflist, currentLine)
+                vim.fn.setqflist(qflist, "u")
+                -- vim.cmd("silent! cfirst " .. currentLine)
+                vim.cmd("silent! copen")
+            end,
+            buffer = vim.api.nvim_get_current_buf(),
+        })
+    end,
+}, { nested = true, create_group = "QuickFix" })
+
+nx.au({
+    { "BufReadPost" },
+    pattern = "*.{props,sln,csproj}",
+    callback = function()
+        require("my.dotnet")
+        -- vim.g.dotnet_errors_only = true
+        -- -- vim.g.dotnet_show_project_file =false
+        -- vim.cmd("compiler dotnet")
+    end,
+}, { nested = true, create_group = "DotnetProject" })
 
 nx.au({
     {
@@ -175,7 +222,7 @@ nx.au({
             vim.cmd("normal! zz")
         end,
     },
-})
+}, { create_group = "RememberCursorPosition", nested = true })
 
 nx.au({
     "TextYankPost",
@@ -183,7 +230,7 @@ nx.au({
     callback = function()
         vim.hl.on_yank({ timeout = 50 })
     end,
-}, { create_group = "HighlightYank" })
+}, { nested = true, create_group = "HighlightYank" })
 
 nx.au({
     { "BufWinEnter", "BufReadPost" },
@@ -195,7 +242,7 @@ nx.au({
         vim.cmd("normal! zxzR")
         vim.opt.foldlevel = 99
     end,
-}, { create_group = "UpdateFolds" })
+}, { create_group = "UpdateFolds", nested = true })
 
 nx.au({
     "FileType",
@@ -206,7 +253,7 @@ nx.au({
         vim.cmd("setlocal includeexpr=tr(v:fname,'\\\\','/')")
         -- vim.opt_local.includeexpr:prepend(vim.fn.tr(vim.v.fname, [[\\\\]], "/"))
     end,
-}, { create_group = "GFWithBackslashes" })
+}, { nested = true, create_group = "GFWithBackslashes" })
 
 nx.au({
     {
@@ -225,4 +272,11 @@ nx.au({
             end
         end,
     },
-}, { create_group = "DisableRelativeNumbersInInsertMode" })
+}, { create_group = "DisableRelativeNumbersInInsertMode", nested = true })
+
+nx.au({
+    { "BufReadPost", "BufWritePost", "CursorHold", "InsertLeave" },
+    callback = function(args)
+        pcall(vim.lsp.codelens.refresh, { bufnr = args.buf })
+    end,
+}, { create_group = "LspCodeLens", nested = true })

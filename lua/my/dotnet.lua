@@ -1,0 +1,168 @@
+local function find_project_file(extension)
+    local found_files = vim.fs.find(function(name, path)
+        return vim.endswith(name, extension)
+    end, {
+        upward = true,
+        limit = math.huge,
+        type = "file",
+        path = vim.fs.dirname(vim.fn.expand("%")),
+    })
+
+    if #found_files == 0 then
+        vim.notify(string.format("no %s file found", extension), vim.log.levels.ERROR)
+
+        return nil
+    end
+    local chosen_file = found_files[1]
+    if #found_files > 1 then
+        local prompt = string.format("multiple %s files found, choose one to continue", extension)
+        vim.ui.select(found_files, { prompt = prompt }, function(choice)
+            if choice == nil then
+                vim.notify("no file was chosen", vim.log.levels.ERROR)
+                return
+            end
+
+            chosen_file = choice
+        end)
+    end
+    return vim.fs.normalize(chosen_file)
+end
+
+local function process_output(out)
+    if out.code == 0 then
+        vim.schedule(function()
+            vim.notify("no build errors", vim.log.levels.INFO)
+        end)
+        return
+    end
+    local lines = vim.split(out.stdout, "\n", { plain = true, trimempty = true })
+
+    local qf_items = vim.iter(lines)
+        :map(function(line)
+            local path, line_num, col_num, msg = line:match("^(.+)%((%d+),(%d+)%)%: error (.+)$")
+
+            if path and line_num and col_num and msg then
+                ---@diagnostic disable-next-line: unused-local
+                local error_code, actual_msg, project = msg:match("^(.+%:%s)(.+)%s(%[.+%])")
+                return {
+                    filename = path,
+                    lnum = tonumber(line_num),
+                    col = tonumber(col_num),
+                    text = actual_msg,
+                }
+            else
+                path, msg = line:match("^(.+) %: error (.+)$")
+                if not path or not msg then
+                    return nil
+                end
+                ---@diagnostic disable-next-line: unused-local
+                local error_code, actual_msg, project = msg:match("^(.+%:%s)(.+)%s")
+                return {
+                    filename = path,
+                    lnum = 0,
+                    col = 0,
+                    text = actual_msg,
+                }
+            end
+        end)
+        :filter(function(thing)
+            return thing ~= nil
+        end)
+        :totable()
+    if #qf_items > 0 then
+        local option = " "
+        vim.schedule(function()
+            vim.fn.setqflist(qf_items, option)
+            vim.cmd("copen")
+        end)
+    end
+end
+
+local function build_and_set_qf(project_file)
+    if vim.fn.executable("dotnet") == 0 then
+        vim.notify("couldn't find executable `dotnet` in PATH", vim.log.levels.ERROR)
+        return
+    end
+    local cmd = {
+        "dotnet",
+        "build",
+        project_file,
+        "--",
+        "/consoleLoggerParameters:ErrorsOnly;NoSummary;DisableConsoleColor",
+    }
+    vim.notify("building " .. project_file, vim.log.levels.INFO)
+    vim.system(cmd, { text = true }, process_output)
+end
+
+local function build_sln()
+    local project_file = find_project_file("sln")
+    if project_file == nil then
+        return
+    end
+
+    build_and_set_qf(project_file)
+end
+
+local function build_csproj()
+    local project_file = find_project_file("csproj")
+    if project_file == nil then
+        return
+    end
+
+    build_and_set_qf(project_file)
+end
+
+nx.cmd({
+    { "DotnetBuildSln", build_sln },
+    { "DotnetBuildCsproj", build_csproj },
+})
+
+nx.map({
+    { "<leader>ds", build_sln, desc = "dotnet build sln" },
+    { "<leader>dp", build_csproj, desc = "dotnet build csproj" },
+})
+
+nx.map({
+    "gD",
+    function()
+        local request_type = vim.fn.expand("<cword>")
+        local query = "Handle"
+        vim.lsp.buf_request_all(0, "workspace/symbol", {
+            query = query,
+        }, function(response, _, _)
+            if response == nil or #response == 0 or response[1] == nil then
+                vim.notify("nothing found for query '" .. query .. "'", vim.log.levels.INFO)
+                return
+            end
+            local error = response[1].err
+            if error then
+                vim.notify(
+                    "query '" .. query .. "' contains returned error(s): '" .. error.message .. "'",
+                    vim.log.levels.INFO
+                )
+                return
+            end
+
+            local client_id = response[1].context.client_id
+            local client = assert(vim.lsp.get_client_by_id(client_id))
+            local out = vim.iter(response[1].result)
+                :filter(function(item)
+                    return item.kind == vim.lsp.protocol.SymbolKind.Method
+                        and item.name == "Handle"
+                        and (item.containerName:find(request_type) ~= nil) -- I assume that the handler contains the name of the request
+                end)
+                :map(function(item)
+                    return item.location
+                end)
+                :totable()
+            local locations = vim.lsp.util.locations_to_items(out, client.offset_encoding)
+            if #locations < 1 then
+                vim.notify("no handler found for `" .. request_type .. "`", vim.log.levels.WARN)
+                return
+            end
+            vim.fn.setqflist(locations, "r")
+            vim.cmd("silent! cfirst")
+        end)
+    end,
+    desc = "go to handler implementation",
+})

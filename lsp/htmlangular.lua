@@ -1,7 +1,3 @@
-if not vim.fn.executable("ngserver") then
-    return
-end
-
 local angularls_path = vim.fs.dirname(vim.fn.exepath("ngserver"))
 
 local cmd = {
@@ -19,9 +15,9 @@ local cmd = {
     }, ","),
 }
 
-require("lspconfig").angularls.setup({
+return {
     cmd = cmd,
     on_new_config = function(new_config, new_root_dir)
         new_config.cmd = cmd
     end,
-})
+}

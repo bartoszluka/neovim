@@ -70,6 +70,8 @@ nx.set({
     splitright = true, -- Put new windows right of current
     completeopt = "menu,menuone,noinsert", -- Set completeopt to have a better completion experience
     guicursor = "n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20",
+    cursorline = true,
+    laststatus = 3, -- global statusline
     guifont = "CaskaydiaCove Nerd Font Mono:h14",
     inccommand = "split", -- show the effects of a search / replace in a live preview window
     -- formatexpr = "v:lua.require'conform'.formatexpr()",
@@ -95,15 +97,8 @@ nx.set({
 -- vim.opt.foldtext = "v:lua.MyFoldtext()"
 
 nx.set({
-    signcolumn = "yes",
-    cursorline = true,
-}, vim.wo)
-
-nx.set({
     guifont = "FiraCode Nerd Font Mono:h9",
     -- guicursor = "n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20",
-    showmode = false,
-    laststatus = 3,
 }, vim.go)
 
 --  set border for floating windows
@@ -161,3 +156,7 @@ vim.diagnostic.config({
         prefix = "",
     },
 })
+
+vim.opt.title = true
+vim.opt.titlelen = 0
+vim.opt.titlestring = "nvim " .. vim.fs.normalize(vim.uv.cwd() or "")

@@ -42,7 +42,7 @@ return {
             -- Oil will automatically delete hidden buffers config this delay
             -- You can set the delay to false to disable cleanup entirely
             -- Note that the cleanup process only starts when none of the oil buffers are currently displayed
-            cleanup_delay_ms = 2000,
+            cleanup_delay_ms = 200,
             -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
             -- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })
             -- Additionally, if it is a string that matches "actions.<name>",
@@ -141,5 +141,52 @@ return {
                 },
             },
         })
+        nx.au({
+            "User",
+            pattern = "OilActionsPost",
+            callback = function(args)
+                -- If err is non-null, we encountered an error while processing the actions
+                if args.data.err then
+                    vim.notify(vim.inspect(args.data.err), vim.log.levels.ERROR)
+                    return
+                end
+                if not args.data.actions then
+                    vim.notify("no actions", vim.log.levels.ERROR)
+                    return
+                end
+
+                vim.iter(args.data.actions)
+                    :filter(function(action)
+                        return action.type == "delete" and action.entry_type == "file"
+                    end)
+                    :each(function(action)
+                        local file_url = action.url:gsub("oil://", "file://", 1)
+
+                        -- to fix windows paths
+                        if
+                            file_url:match("/%u/") ~= nil -- finds /C/ or /D/
+                            and vim.uv.os_uname().sysname:find("Windows", 1, true) == 1 -- matches Windows_NT
+                        then
+                            file_url = file_url:gsub("/(%u)/", "/%1:/", 1) -- replaces /C/ with /C:/
+                        end
+
+                        local bufnr = vim.uri_to_bufnr(file_url)
+                        if bufnr < 0 then
+                            vim.notify("bufnr not found for uri " .. file_url, vim.log.levels.ERROR)
+                            return
+                        end
+
+                        local file_name = vim.uri_to_fname(file_url)
+                        vim.bo[bufnr].buflisted = false
+                        local ok, err = pcall(vim.api.nvim_buf_delete, bufnr, { force = true, unload = true })
+                        if not ok then
+                            vim.notify(vim.inspect(err), vim.log.levels.ERROR)
+                            return
+                        end
+
+                        vim.notify(("deleted buffer %d for file '%s'"):format(bufnr, file_name), vim.log.levels.DEBUG)
+                    end)
+            end,
+        }, { create_group = "UnloadBufferWhenFileDeleted", nested = true })
     end,
 }

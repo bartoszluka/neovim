@@ -1,5 +1,5 @@
 return {
-    enabled = true,
+    enabled = false,
     "gbprod/nord.nvim",
     -- this colorscheme does not behave well with the `colorscheme` setting
     -- colorscheme = "nord",

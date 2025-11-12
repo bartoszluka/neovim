@@ -3,6 +3,7 @@ return {
     version = "^3.0.0",
     keys = { "ys", "cs", "ds", { "s", mode = { "v" } } },
     config = function()
+        -- local config = require("nvim-surround.config")
         require("nvim-surround").setup({
             keymaps = {
                 visual = "s",
@@ -40,6 +41,17 @@ return {
                 --     },
                 -- },
                 q = { add = { '"', '"' } },
+                T = {
+                    add = function()
+                        local input = require("nvim-surround.input")
+                        local type_name = input.get_input("generic type name: ")
+                        return { type_name .. "<", ">" }
+                    end,
+                    find = function()
+                        local config = require("nvim-surround.config")
+                        return config.get_selection({ node = "generic_name" })
+                    end,
+                },
             },
             indent_lines = false,
             move_cursor = false,
