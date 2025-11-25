@@ -75,7 +75,15 @@ return {
         --local capabilities = require("blink.cmp").get_lsp().capabilities()
         local capabilities = require("my.lsp").make_capabilities()
         capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
-        capabilities.workspace.diagnostics.refreshSupport = true
+        if capabilities.workspace.diagnostics then
+            capabilities.workspace.diagnostics.refreshSupport = true
+        else
+            capabilities.workspace = {
+                diagnostics = {
+                    refreshSupport = true,
+                },
+            }
+        end
 
         vim.lsp.config("roslyn", {
             cmd = {

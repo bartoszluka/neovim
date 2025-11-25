@@ -51,10 +51,10 @@ nx.set({
     ignorecase = true, -- ignore case in search patterns
     smartcase = true, -- use smart case - ignore case UNLESS /C or capital in search
     -- folds
-    foldmethod = "expr",
-    foldexpr = "v:lua.vim.treesitter.foldexpr()",
-    -- foldtext = "v:lua.vim.treesitter.foldtext()",
-    foldenable = false, -- disable folds on start
+    -- foldmethod = "expr",
+    -- foldexpr = "v:lua.vim.treesitter.foldexpr",
+    -- -- foldtext = "v:lua.vim.treesitter.foldtext()",
+    -- foldenable = false, -- disable folds on start
     -- ...
     wrap = false, -- wrapping of text
     breakindent = true,
@@ -76,25 +76,6 @@ nx.set({
     inccommand = "split", -- show the effects of a search / replace in a live preview window
     -- formatexpr = "v:lua.require'conform'.formatexpr()",
 }, vim.opt)
-
--- function MyFoldtext()
---     local foldtext = vim.fn.foldtext()
---
---     ---@diagnostic disable-next-line: undefined-field
---     local lines_folded = vim.v.foldend - vim.v.foldstart
---     local text_lines = " lines"
---
---     if lines_folded == 1 then
---         text_lines = " line"
---     end
---
---     ---@diagnostic disable-next-line: param-type-mismatch
---     table.insert(foldtext, { " - " .. lines_folded .. text_lines, { "Folded" } })
---
---     return foldtext
--- end
---
--- vim.opt.foldtext = "v:lua.MyFoldtext()"
 
 nx.set({
     guifont = "FiraCode Nerd Font Mono:h9",

@@ -31,6 +31,19 @@ return {
                     "",
                 }),
             }),
+            -- doc comments
+            s("/doc", {
+                t({
+                    "/// <summary>",
+                    "",
+                }),
+                t("/// "),
+                i(1),
+                t({
+                    "",
+                    "/// <summary>",
+                }),
+            }),
         })
     end,
     opts = {

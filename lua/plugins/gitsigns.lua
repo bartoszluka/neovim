@@ -8,6 +8,8 @@ return {
                 current_line_blame_opts = {
                     ignore_whitespace = true,
                 },
+                attach_to_untracked = true,
+                sign_priority = 20,
                 on_attach = function(bufnr)
                     local gs = package.loaded.gitsigns
 

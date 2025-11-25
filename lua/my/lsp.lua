@@ -214,6 +214,7 @@ local make_capabilities = function()
 end
 
 local servers = {
+    nushell = {},
     ts_ls = {},
     lua_ls = {},
     jsonls = {},

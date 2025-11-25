@@ -233,18 +233,6 @@ nx.au({
 }, { nested = true, create_group = "HighlightYank" })
 
 nx.au({
-    { "BufWinEnter", "BufReadPost" },
-    --  not sure these 2 are needed
-    -- "FileReadPost",
-    pattern = "*",
-    -- manually update folds and open all folds
-    callback = function()
-        vim.cmd("normal! zxzR")
-        vim.opt.foldlevel = 99
-    end,
-}, { create_group = "UpdateFolds", nested = true })
-
-nx.au({
     "FileType",
     pattern = "xml",
     callback = function()
@@ -280,3 +268,33 @@ nx.au({
         pcall(vim.lsp.codelens.refresh, { bufnr = args.buf })
     end,
 }, { create_group = "LspCodeLens", nested = true })
+
+nx.au({
+    { "BufReadPost" },
+    callback = function()
+        vim.opt.foldmethod = "expr"
+        vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        vim.opt.foldenable = false
+
+        function MyFoldtext()
+            local lines_folded = vim.v.foldend - vim.v.foldstart
+            local text_lines = " lines"
+
+            if lines_folded == 1 then
+                text_lines = " line"
+            end
+
+            local fold_start_line = vim.fn.getline(vim.v.foldstart)
+            -- local indent_size = vim.fn.shiftwidth()
+            -- local indent = string.rep(" ", indent_size)
+            -- local number_of_indents = tonumber(vim.treesitter.foldexpr()) ---@as number
+            -- if not number_of_indents then
+            --     number_of_indents = 1
+            -- end
+            -- return string.rep(indent, number_of_indents) .. lines_folded .. text_lines
+
+            return fold_start_line .. " + " .. lines_folded .. text_lines
+        end
+        vim.opt.foldtext = "v:lua.MyFoldtext()"
+    end,
+}, { create_group = "Folds", nested = true })

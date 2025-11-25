@@ -13,7 +13,7 @@ _G.cmd = function(command)
     return "<cmd>" .. command .. "<CR>"
 end
 
-require("my.powershell")
+require("my.nushell")
 require("config.lazy")
 require("my.autocommands")
 require("my.settings")

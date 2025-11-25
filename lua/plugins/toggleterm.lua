@@ -6,7 +6,7 @@ return {
     keys = { ctrl_t },
     cmd = { "ToggleTerm" },
     config = function()
-        require("my.powershell")
+        require("my.nushell")
         require("toggleterm").setup({
             open_mapping = ctrl_t,
             direction = "float",
