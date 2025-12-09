@@ -13,6 +13,7 @@ _G.cmd = function(command)
     return "<cmd>" .. command .. "<CR>"
 end
 
+require("my.haskell")
 require("my.nushell")
 require("config.lazy")
 require("my.autocommands")

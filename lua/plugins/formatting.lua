@@ -7,9 +7,6 @@ return {
                 require("conform").format({
                     async = true,
                     lsp_fallback = true,
-                    callback = function()
-                        pcall(require("lint").try_lint, nil)
-                    end,
                 })
             end,
             desc = "format file",
