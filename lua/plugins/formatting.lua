@@ -57,6 +57,7 @@ return {
                     stop_after_first = false,
                     -- "prettypst",
                 },
+                cabal = { "cabal_gild" },
                 -- Use the "*" filetype to run formatters on all filetypes.
                 ["*"] = { "trim_whitespace" },
                 -- Use the "_" filetype to run formatters on filetypes that don't have other formatters configured.
@@ -122,6 +123,10 @@ return {
                 just = {
                     command = "just",
                     args = { "--dump", "-f", "$FILENAME" },
+                    stdin = true,
+                },
+                cabal_gild = {
+                    command = "cabal-gild",
                     stdin = true,
                 },
                 psformat = {
